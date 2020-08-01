@@ -1,3 +1,3 @@
-import './mode'
+import './scss/style.scss'
 
-console.log('1111')
+console.log('working...')

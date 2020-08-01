@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
     context: path.resolve(__dirname,'src'),
     mode: 'development',
-    entry: './app.js',
+    entry: ['@babel/polyfill','./app.js'],
     output: {
         filename: 'bundle.[chunkhash].js',
         path: path.resolve(__dirname,'public')
@@ -18,6 +18,9 @@ module.exports = {
             '@': path.resolve(__dirname,'src'),
             '@core': path.resolve(__dirname,'src/core')
         }
+    },
+    devServer: {
+        port: 3000
     },
     plugins: [
         new CleanWebpackPlugin(),
@@ -32,5 +35,23 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'bundle.[hash].css'
         })
-    ]
+    ],
+    module: {
+        rules: [
+          {
+            test: /\.s[ac]ss$/i,
+            use: [MiniCssExtractPlugin.loader,'css-loader','sass-loader']
+          },
+          { 
+            test: /\.js$/, 
+            exclude: /node_modules/, 
+            loader: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env']
+                }
+            } 
+          }
+        ]
+    }
 }
