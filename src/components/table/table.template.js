@@ -1,11 +1,13 @@
+import { Table } from "./Table"
+
 const CODES = {
     A: 65,
     Z: 90
 }
 
-function createCell(_,index) {
+function createCell(row, col) {
     return `
-        <div class="cell" contenteditable data-col="${index}"></div>
+        <div class="cell" contenteditable data-id="${row}:${col}" data-col="${col}"></div>
     `
 }
 
@@ -31,8 +33,9 @@ function createRow(index, content){
     `
 }
 
-export function createTable(rowsCount = 15){
-    const colsCount = CODES.Z - CODES.A + 1
+export function createTable(){
+    const colsCount = Table.MAX_COLUMN
+    const rowsCount = Table.MAX_ROW
     const rows = []
 
     const cols = new Array(colsCount)
@@ -44,12 +47,12 @@ export function createTable(rowsCount = 15){
     .join('')
 
     rows.push(createRow(null, cols))
-    for(let i = 0; i < rowsCount; i++){
+    for(let row = 0; row < rowsCount; row++){
         const cells = new Array(colsCount)
         .fill('')
-        .map(createCell)
+        .map((_, col) => createCell(row,col))
         .join('')
-        rows.push(createRow(i + 1,cells))
+        rows.push(createRow(row + 1,cells))
     }
 
     return rows.join('')
