@@ -20,11 +20,21 @@ export class TableSelection {
         this.group = []
     }
 
-    selectGroup($cells = []){
+    get selectedIds(){
+        return this.group.map($el => $el.id())
+    }
+
+    selectGroup($cells = []) {
         this.clear()
 
         this.group = $cells
         this.group.forEach(el => el.addClass(TableSelection.classSelect))
 
+    }
+
+    applyStyle(style) {
+        this.group.forEach($element => {
+            $element.css(style)
+        })
     }
 }
